@@ -1,0 +1,201 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Models
+
+model User {
+  id                  Int     @id @default(autoincrement())
+  email               String  @unique
+  password            String  
+  recoveryToken       String? 
+  person              Person?
+
+  @@map("users")
+}
+
+// entidad para app-web
+model Person {
+  id                  Int     @id @default(autoincrement())
+  identificationType  identificationType @relation(fields: [identificationTypeId], references: [id])
+  identificationTypeId Int  @unique
+  role                Role    @relation(fields: [roleId], references: [id])
+  roleId              Int
+  name                String  
+  lastName            String 
+  dateOfBirth         DateTime  
+  gender              String 
+  phoneNumber         String
+  email               String  @unique
+  address             String  
+  coordinate          Json  
+  bloodType           String 
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  user                User    @relation(fields: [userId], references: [id]) 
+  userId              Int     @unique
+  donorInfoId         Int?
+  bloodRequests       BloodRequest[]
+  donorInfo           DonorInfo?
+  chatMessages        ChatMessages[]
+
+  @@map("persons")
+}
+
+// entidad para la app mobile
+model DonorInfo {
+  id                  Int     @id @default(autoincrement())
+  lastDonation        DateTime 
+  hasTattoo           Boolean  
+  recentIllness       Boolean 
+  travelHistory       String 
+  medication          String  
+  surgery             Boolean 
+  pregnancy           Boolean
+  weight              Decimal  @default(4.2)
+  height              Decimal  @default(2.2)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now())
+  donation            Donation @relation(fields: [donationId], references: [id])
+  donationId          Int
+  person              Person   @relation(fields: [personId], references: [id])
+  personId            Int      @unique
+
+  @@map("donorInfos")
+}
+
+// entidada para web / app
+model Institution {
+  id              Int     @id @default(autoincrement())
+  name            String  
+  address         String 
+  coordinate      Json 
+  phone           String 
+  email           String  
+  activeHours     DateTime  
+  bloodStorage    Int
+  bloodRequest    BloodRequest[]
+  donation        Donation[]
+
+  @@map("institutions")
+}
+
+// entidad la app
+model Status {
+  id                Int     @id @default(autoincrement())
+  status            String
+  donation          Donation? 
+
+  @@map("status")
+}
+
+// entidad 
+model Role {
+  id                Int     @id @default(autoincrement())
+  role              String
+  description       String
+  persons           Person[]
+  
+  @@map("roles")
+}
+// web
+model BloodRequest {
+  id                Int     @id @default(autoincrement())
+  centerDonationId  Int 
+  identificationType  identificationType @relation(fields: [identificationTypeId], references: [id])
+  identificationTypeId Int  @unique
+  role              String 
+  name              String
+  lastName          String
+  dateOfBirth       DateTime 
+  gender            String 
+  bloodType         String 
+  phoneNumber       String
+  amountNeeded      Int 
+  address           String 
+  coordinate        Json
+  email             String  @unique
+  issueDate         DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+  institution       Institution @relation(fields: [institutionId], references: [id])
+  institutionId     Int
+  donations         Donation[]          
+  urgency           Urgency @relation(fields: [urgencyId], references: [id])
+  urgencyId         Int
+  person            Person @relation(fields: [personId], references: [id])
+  personId          Int
+
+  @@map("bloodRequests")
+}
+
+// app
+model Donation {
+  id                Int      @id @default(autoincrement())
+  donorId           Int
+  amountDonated     Int
+  centerDonationId  Int 
+  statusDonation    String   @unique
+  request           String
+  dateOfDonation    DateTime
+
+  institution       Institution @relation(fields: [institutionId], references: [id])
+  institutionId     Int 
+  donorInfo         DonorInfo[]
+
+  status            Status @relation(fields: [statusId], references: [id])
+  statusId          Int    @unique
+  bloodRequest      BloodRequest @relation(fields: [bloodRequestId], references: [id])
+  bloodRequestId    Int 
+
+  @@map("donations")
+}
+
+model Chat {
+  id                Int     @id @default(autoincrement())
+  issueDate         DateTime
+  chatMessages      ChatMessages[]
+
+  @@map("chats")
+}
+
+model ChatMessages {
+  id                Int     @id @default(autoincrement())
+  chatContent       String
+  dateOfCreation    DateTime 
+  chat              Chat @relation(fields: [chatId], references: [id])
+  chatId            Int 
+  person            Person[]
+
+  @@map("chatMessages")
+}
+
+// todo
+model Urgency {
+  id                Int     @id @default(autoincrement())
+  priority          Int
+  bloodRequest      BloodRequest[]
+
+  @@map("urgencies")
+}
+
+// todo
+model identificationType {
+  id Int @id @default(autoincrement())
+  Identification String
+  person Person? 
+  bloodRequest BloodRequest?
+
+  @@map("identificationTypes")
+}
