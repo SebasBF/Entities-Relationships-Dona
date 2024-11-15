@@ -22,14 +22,12 @@ export class UserServices{
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        
-        if(isPasswordValid){
-            return {
-                token: jwt.sign({
-                    email
-                },process.env.TOKEN_SECRET,{expiresIn: "1h"})
-            }
-        }else{ throw "Usuario o contraseña no válido"}
+        if (!isPasswordValid) {
+            throw new Error('Usuario o contraseña no válidos');
+          }
+      
+          const token = jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+          return { token };       
     }
 
     async updateUser(id: number, updateUserDto: Partial<UpdateUserDto>): Promise < UserDto | null>{
