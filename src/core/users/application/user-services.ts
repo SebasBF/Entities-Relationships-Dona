@@ -16,17 +16,18 @@ export class UserServices{
 
     async loginUser(email: string, password: string): Promise <{token: string}>{
         const user = await this.userRepository.findUserByEmail(email);
+        const idrol = user.idrol;
+
         if(!user){
             throw "Usuario no encontrado"
-        }
-
+        } 
         const isPasswordValid = await bcrypt.compare(password, user.password);
+
         if (!isPasswordValid) {
             throw new Error('Usuario o contraseña no válidos');
-          }
-      
-          const token = jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
-          return { token };       
+        }
+        const token = jwt.sign({ email, idrol }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+        return { token };       
     }
 
     async updateUser(id: number, updateUserDto: Partial<UpdateUserDto>): Promise < UserDto | null>{
