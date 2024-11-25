@@ -9,6 +9,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware) // Aplica el middleware
-      .forRoutes({ path: 'users/login', method: RequestMethod.POST }); // Solo aplica a la ruta 'users/login'
+      .forRoutes({ path: 'users/forgot-password', method: RequestMethod.POST });     
   }
 }
