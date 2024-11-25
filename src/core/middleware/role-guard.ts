@@ -11,9 +11,7 @@ export class RolesGuard implements CanActivate{
         if(!roles){
             return false;
         }
-        //const request = context.switchToHttp().getRequest();
-        //const user = request.user
-       // return matchRoles(roles, user.roles);
+        //TO DO: Implementar lógica de validación de roles
     }
 }
 

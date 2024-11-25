@@ -38,8 +38,10 @@ export class UserServices{
         return this.userRepository.update(id, updateUserDto);
     }
 //
-    async forgotPassword(email: string): Promise <void>{       
-        const token = crypto.randomBytes(32).toString("hex");       
+    async forgotPassword(email: string, token:string): Promise <void>{  
+        if(!token){
+            throw "Tóken no válido"
+        }           
         return this.userRepository.forgotPassword(email, token);
     }
 
