@@ -1,4 +1,4 @@
-import { SendEmailDto } from "src/email/emailDTOs"
+import { SendEmailDto } from "./emailDTOs"
 
 export class email{
     constructor(
