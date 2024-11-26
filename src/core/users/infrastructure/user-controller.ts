@@ -1,6 +1,7 @@
 import { Controller,Post,Put,Body,Param } from "@nestjs/common";
 import { UserServices } from "src/core/users/application/user-services";
 import { UserDto, UpdateUserDto, ForgotPasswordDto, ResetPasswordDto } from "./userDTOs";
+import { Roles } from "src/utility/roles-decorator";
 
 @Controller('users')
 
@@ -25,7 +26,7 @@ export class UserController{
 
     @Post('forgot-password')
     async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto){
-        await this.userServices.forgotPassword(forgotPasswordDto.email);
+        await this.userServices.forgotPassword(forgotPasswordDto.email, forgotPasswordDto.token);
         return {message: 'Solicitud de restablecimiento de contraseña enviada'};
     }
 
