@@ -10,7 +10,7 @@ export class UserDto {
 
   @IsString()
   @IsNotEmpty()
-  idrol: number;
+  roleId: number;
 }
 
 export class UpdateUserDto {

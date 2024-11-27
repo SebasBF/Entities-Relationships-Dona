@@ -17,7 +17,8 @@ export class UserRepository implements IUserRepository{
         return prisma.user.create({
             data: {
                 email: userDto.email,
-                password: hashedPassword
+                password: hashedPassword,
+                roleId: null
             } 
         });
     }
