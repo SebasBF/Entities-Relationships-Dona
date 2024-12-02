@@ -7,10 +7,6 @@ export class UserDto {
   @IsString()
   @IsNotEmpty()
   password: string;
-
-  @IsString()
-  @IsNotEmpty()
-  roleId: number;
 }
 
 export class UpdateUserDto {

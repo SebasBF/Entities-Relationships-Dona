@@ -9,8 +9,7 @@ export class UserController{
     constructor(private readonly userServices: UserServices){}
 
     @Post('register')
-    async register(@Body() userDto: UserDto){
-        console.log('controller ==>',userDto)
+    async register(@Body() userDto: UserDto){     
         return this.userServices.registerUser(userDto);
     }
     

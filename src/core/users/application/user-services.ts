@@ -15,8 +15,7 @@ export class UserServices{
     }
 
     async loginUser(email: string, password: string): Promise <{token: string}>{
-        const user = await this.userRepository.findUserByEmail(email);
-        const idrol = user.roleId;
+        const user = await this.userRepository.findUserByEmail(email);     
 
         if(!user){
             throw "Usuario no encontrado"
@@ -26,7 +25,7 @@ export class UserServices{
         if (!isPasswordValid) {
             throw new Error('Usuario o contraseña no válidos');
         }
-        const token = jwt.sign({ email, idrol }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
         return { token };       
     }
 
