@@ -18,7 +18,7 @@ export class UserRepository implements IUserRepository{
             data: {
                 email: userDto.email,
                 password: hashedPassword,
-                roleId: null
+                roleId: 2,
             } 
         });
     }

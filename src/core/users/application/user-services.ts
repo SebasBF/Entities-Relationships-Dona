@@ -25,7 +25,7 @@ export class UserServices{
         if (!isPasswordValid) {
             throw new Error('Usuario o contraseña no válidos');
         }
-        const token = jwt.sign({ email }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ email}, process.env.TOKEN_SECRET, { expiresIn: '1h' });
         return { token };       
     }
 
