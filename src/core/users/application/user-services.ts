@@ -1,9 +1,7 @@
-import { IUserRepository } from "../domain/user-repository";
 import {UserDto, UpdateUserDto, ResetPasswordDto } from "../infrastructure/userDTOs";
 import { Injectable } from "@nestjs/common";
-import crypto from "crypto"
 import * as bcrypt from 'bcrypt';
-import jwt from "jsonwebtoken";
+import * as jwt from 'jsonwebtoken';
 import { UserRepository } from "../infrastructure/user-repository";
 
 @Injectable()
@@ -25,8 +23,8 @@ export class UserServices{
         if (!isPasswordValid) {
             throw new Error('Usuario o contraseña no válidos');
         }
-        const token = jwt.sign({ email}, process.env.TOKEN_SECRET, { expiresIn: '1h' });
-        return { token };       
+        const token = jwt.sign({email}, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+        return {token};       
     }
 
     async updateUser(id: number, updateUserDto: Partial<UpdateUserDto>): Promise < UserDto | null>{

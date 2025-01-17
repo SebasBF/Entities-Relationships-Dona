@@ -9,7 +9,7 @@ export class UserDto {
   password: string;
 
   @IsNumber()
-  roleId: number;
+  roleid: number;
 }
 
 export class UpdateUserDto {

@@ -15,7 +15,7 @@ export class UserController{
     
     @Post('login')
     async login(@Body() userDto: Partial<UserDto>){
-        console.log(userDto.roleId);
+        
         return this.userServices.loginUser(userDto.email, userDto.password);
 
     }

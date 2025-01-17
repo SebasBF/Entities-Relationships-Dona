@@ -18,7 +18,7 @@ export class UserRepository implements IUserRepository{
             data: {
                 email: userDto.email,
                 password: hashedPassword,
-                roleId: 2,
+                roleid: 2,
             } 
         });
     }
@@ -33,9 +33,10 @@ export class UserRepository implements IUserRepository{
     }
 
     async findUserByToken(token:string): Promise <UserDto | null>{
+        
         const user = await prisma.user.findFirst({
              where: {
-                  recoveryToken: token,              
+                  //recoveryToken: token,              
                 },
         });
         return user;
@@ -57,13 +58,13 @@ export class UserRepository implements IUserRepository{
             }
         });
     }
-    //
+    
     async forgotPassword(email: string, token: string): Promise<void> {
         
         await prisma.user.update({
             where: { email },
             data: {
-                recoveryToken: token,             
+               // recoveryToken: token,             
             },
         });
     } 
